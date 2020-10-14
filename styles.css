@@ -1,0 +1,27 @@
+
+
+.navbar {
+    margin-bottom: 50px;
+}
+
+.navbar h1 {
+    font-size: 2rem;
+}
+
+
+
+
+section {
+    padding: 0 10% 0 10%;
+}
+
+#paragraph-input-analysis-box h1{
+
+    padding: 20px;
+}
+#paragraph-input-analysis-box{
+    flex-wrap: wrap;
+    height: fit-content;
+    padding-top: 25px;
+    justify-content: space-between;
+}
