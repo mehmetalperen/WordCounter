@@ -28,10 +28,21 @@ const ParagraphCrt = ( function() {
         previousKeyCode: -1
 
     }
-    
+
+    function wordSpliter() { //each second finds all of the words in the essay
+        setInterval(() => {
+            data.words = data.essay.split(' ');
+        }, 1000);
+    }
+    wordSpliter();
+
     
 
     return {
+        addInput: function(input) {
+            data.essay = input;
+
+        },
         keyboardMovements(keyNumber) {
             data.keyCodes.push(keyNumber);
 
@@ -78,7 +89,9 @@ const UIctr = ( function() {
 
     return {
        
-        
+        getInput: function() {
+            return(document.querySelector(DOMstrings.inputBox).value);
+        },
         getDomStrings: function() {
             return DOMstrings;
         }
@@ -101,25 +114,36 @@ const UIctr = ( function() {
 ////////////////////////////////////////////////////////////////////////
 const AppControl = ( function(ParagraphControl,UIcontrol ) {
 
+
     const Dom = UIcontrol.getDomStrings();
 
     
     function setEventListeners() {
-        
 
-        //If a key is pressed
-        document.addEventListener('keydown', function(event) {
+
+        //AFTER a key is pressed
+        document.addEventListener('keyup', (event) =>{
+            console.log(event.keyCode);
             handleTyping(event.keyCode);
-        })
+        });
+
+        
+        
     }
 
     function handleTyping(pressedKey) {
 
+        
+        //get input
+        let input = UIcontrol.getInput();
+
         //save keyboard movements
         ParagraphControl.keyboardMovements(pressedKey);
 
-        //get input
-     
+        //Send the input to the ParagraphControl
+        ParagraphControl.addInput(input);
+
+
         
     }
 
@@ -129,6 +153,7 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
     return {
         initial: function() {
 
+            document.querySelector(Dom.inputBox).focus();
             setEventListeners();
         }
     }
