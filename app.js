@@ -60,14 +60,16 @@ we get uncorrect output becuse it assumes a sentence ends whenever it sees the p
  To get the sentence count we have to split the value by periods (‘.’). then we follow the same dance as with the word count, removing the ‘breaks’ and empty elements.
 my solution is: 
 
-1) if there is a white space after. if yes {
+1) if white space after ".", "?", "!" OR new line OR space+newline --> a sentence
+
+2) if there is a white space after. if yes {
 
     1) check if it is end of the string. if yes, it is a sentence. push else: 
 
     2)check if the char value is a capital letter after white space. if yes, it is a sentence, push. else continue
 }if no, it is not a sentece. else continue
                 */
-               if (data.essay[i + 1] === undefined) {
+               if (data.essay[i + 1] === undefined || data.essay[i + 1] === '\n' || data.essay[i + 2] === '\n') {
                 data.sentences.push(sentence);
                 sentence = '';
 
@@ -86,22 +88,34 @@ my solution is:
         }
     }
 
+    function paragraphCounter() {
+        let paragraphNum = 0;
+        for (let i = 0; i < data.essay.length; i++) {
+            if (data.essay[i] === '\n') {
+                paragraphNum++;
+            }
+        }
+        data.totalParagraph = paragraphNum;
+    }
+
     return {
         addInput: function(input) {
             data.essay = input;
 
         },
         keyboardMovements(keyNumber) {
-            data.keyCodes.push(keyNumber);
 
-            if (data.keyCodes.length >= 2) {
-                data.currentKeyCode = data.keyCodes[data.keyCodes.length - 1];
-                data.previousKeyCode = data.keyCodes[data.keyCodes.length - 2]
+            if (keyNumber === 8) {
+                data.keyCodes.pop(); //this way, we will be able to count the paragraphs. 
+            } else {
+                data.keyCodes.push(keyNumber); 
             }
+
             characterCounter();
             wordSpliterAndCounter();
             sentenceSplitter();
             sentenceCounter();
+            paragraphCounter();
 
         },
         getTotals: function() {
