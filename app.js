@@ -15,10 +15,12 @@ const ParagraphCrt = ( function() {
 
     let data = {
         essay: '',
-        characters: [],
+        totalCharacter: 0,
         words: [],
+        totalWord: 0,
         sentences: [],
-        paragraphs: [],
+        totalSentence: 0,
+        totalParagraph: 0,
         currentCharacter: '',
         previousCharacter: '',
         currentWord: '',
@@ -29,14 +31,36 @@ const ParagraphCrt = ( function() {
 
     }
 
-    function wordSpliter() { //each second finds all of the words in the essay
-        setInterval(() => {
-            data.words = data.essay.split(' ');
-        }, 1000);
+    function characterCounter() {
+        data.totalCharacter = data.essay.length
     }
-    wordSpliter();
+    function wordSpliterAndCounter() { //each second finds all of the words in the essay
+        data.words.length = 0;
+        data.words = data.essay.split(' ');
+        if (data.words[data.words.length - 1] === '') {
+            data.words.pop();
+        }
+        data.totalWord = data.words.length;
 
-    
+    }
+
+    function sentenceCounter() {
+        data.totalSentence = data.sentences.length;
+    }
+
+    function sentenceSplitter() {
+        let sentence ='';
+        data.sentences.length = 0;
+        for (let i = 0; i < data.essay.length; i++) {
+            if (data.essay[i] === '.' || data.essay[i] === '?' || data.essay[i] === '!') {
+                data.sentences.push(sentence);
+                sentence = '';
+            } else {
+                sentence += data.essay[i];
+            }
+        }
+
+    }
 
     return {
         addInput: function(input) {
@@ -49,6 +73,20 @@ const ParagraphCrt = ( function() {
             if (data.keyCodes.length >= 2) {
                 data.currentKeyCode = data.keyCodes[data.keyCodes.length - 1];
                 data.previousKeyCode = data.keyCodes[data.keyCodes.length - 2]
+            }
+            characterCounter();
+            wordSpliterAndCounter();
+            sentenceSplitter();
+            sentenceCounter();
+
+        },
+        getTotals: function() {
+            return {
+                characterNumber: data.totalCharacter,
+                wordNumber: data.totalWord,
+                sentenceNumber: data.totalSentence,
+                paragraphNumber: data.totalParagraph
+
             }
         },
         getData: function() {
@@ -94,6 +132,15 @@ const UIctr = ( function() {
         },
         getDomStrings: function() {
             return DOMstrings;
+        },
+        manipulateDetails: function (totCharacter, totWord, totSentence, totParagraph) {
+            document.querySelector(DOMstrings.totalCharacterTitleValue).innerHTML = totCharacter;
+            document.querySelector(DOMstrings.totalWordTitleValue).innerHTML = totWord;
+
+            document.querySelector(DOMstrings.totalCharacterDetailValue).innerHTML = totCharacter;
+            document.querySelector(DOMstrings.totalWordDetailValue).innerHTML = totWord;
+            document.querySelector(DOMstrings.totalSentenceDetailValue).innerHTML = totSentence;
+            document.querySelector(DOMstrings.totalParagraphDetailValue).innerHTML = totParagraph;
         }
     }
 
@@ -123,7 +170,6 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
 
         //AFTER a key is pressed
         document.addEventListener('keyup', (event) =>{
-            console.log(event.keyCode);
             handleTyping(event.keyCode);
         });
 
@@ -137,11 +183,19 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         //get input
         let input = UIcontrol.getInput();
 
+        //Send the input to the ParagraphControl
+        ParagraphControl.addInput(input);
+
         //save keyboard movements
         ParagraphControl.keyboardMovements(pressedKey);
 
-        //Send the input to the ParagraphControl
-        ParagraphControl.addInput(input);
+        //get totals (total character, total words, total sentence, total paragraphs)
+        let totals = ParagraphControl.getTotals();
+
+        //send the totals to UI
+        UIcontrol.manipulateDetails(totals.characterNumber, totals.wordNumber, totals.sentenceNumber, totals.paragraphNumber);
+
+
 
 
         
