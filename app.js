@@ -53,13 +53,37 @@ const ParagraphCrt = ( function() {
         data.sentences.length = 0;
         for (let i = 0; i < data.essay.length; i++) {
             if (data.essay[i] === '.' || data.essay[i] === '?' || data.essay[i] === '!') {
+                /*
+we get uncorrect output becuse it assumes a sentence ends whenever it sees the punctuation above.
+ but there are cases of a sentence not ending even after ".", "?", "!"
+ for example: 
+ To get the sentence count we have to split the value by periods (‘.’). then we follow the same dance as with the word count, removing the ‘breaks’ and empty elements.
+my solution is: 
+
+1) if there is a white space after. if yes {
+
+    1) check if it is end of the string. if yes, it is a sentence. push else: 
+
+    2)check if the char value is a capital letter after white space. if yes, it is a sentence, push. else continue
+}if no, it is not a sentece. else continue
+                */
+               if (data.essay[i + 1] === undefined) {
                 data.sentences.push(sentence);
                 sentence = '';
-            } else {
-                sentence += data.essay[i];
-            }
-        }
 
+                } else if (data.essay[i + 1] === ' ') {
+
+                    if (data.essay[i + 2] === undefined) {
+                        data.sentences.push(sentence);
+                        sentence = '';
+                    } else if (data.essay[i + 2].charCodeAt(0) >= 65 && data.essay[i + 2].charCodeAt(0) <= 90) {
+                        data.sentences.push(sentence);
+                        sentence = '';
+                    }
+                } 
+            }
+         sentence += data.essay[i];
+        }
     }
 
     return {
@@ -186,7 +210,7 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         //Send the input to the ParagraphControl
         ParagraphControl.addInput(input);
 
-        //save keyboard movements
+        //save and analyze keyboard movements
         ParagraphControl.keyboardMovements(pressedKey);
 
         //get totals (total character, total words, total sentence, total paragraphs)
