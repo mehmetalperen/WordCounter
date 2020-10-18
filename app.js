@@ -61,7 +61,7 @@ const ParagraphCrt = ( function() {
         const nonCountableWords = ['as', 'As', 'in', 'In', 'on', 'On', 'at', 'At', 'that','my', 'My', 'his', 'His', 'be', 'Be','Him', 'and', 'And', 'then', 'Then', 'Or', 'or', 'him', 'Her', 'Hers', 'your', 'Your', 'yours', 'Yours', 'their', 'Their', 'Theirs', 'theirs', 'to', 'To', 'That', 'of', 'Of','I', 'am', 'Am', 'is', 'Is', 'are', 'Are', 'we', 'We', 'he', 'He', 'she', 'She', 'the', 'they', 'The', 'They', 'you', 'You', 'it', 'It', 'has', 'had', 'have', 'Has', 'Have', 'Had', 'would', 'Would', 'a', 'an', 'A', 'An'];
 
         for (let i = 0; i < data.words.length; i++) {
-            if (nonCountableWords.indexOf(data.words[i]) !== -1) {
+            if (nonCountableWords.indexOf(data.words[i]) !== -1 || !isNaN(parseInt(data.words[i]/*ignore numbers*/))) {
                 continue;
             }
             let found = false;
@@ -78,25 +78,62 @@ const ParagraphCrt = ( function() {
         let first, second, third, fourth, fifth;
         first = {
             word: '',
-            times: 0
-        };
+            times: 0,
+            per: 0
+        }; 
         second = {
             word: '',
-            times: 0
-        };
+            times: 0,
+            per: 0
+        }; 
         third = {
             word: '',
-            times: 0
-        };
-        fourth = {
+            times: 0,
+            per: 0
+        }; 
+            fourth = {
             word: '',
-            times: 0
-        };
+            times: 0,
+            per: 0
+        }; 
         fifth = {
             word: '',
-            times: 0
-        };
-        
+            times: 0,
+            per: 0
+        }; 
+
+        for (let i = 0; i < data.wordDensity.length; i++) {
+
+            if (data.wordDensity[i].times > first.times) {
+                first.times = data.wordDensity[i].times;
+                first.word = data.wordDensity[i].word;
+                first.per = Math.round(((first.times / data.totalWord) * 100));
+                i = 0;
+            }
+            if (data.wordDensity[i].times > second.times && data.wordDensity[i].word !== first.word) {
+                second.times = data.wordDensity[i].times;
+                second.word = data.wordDensity[i].word;
+                second.per = Math.round(((second.times / data.totalWord) * 100));
+                i = 0;
+            }
+            if (data.wordDensity[i].times > third.times && data.wordDensity[i].word !== second.word && data.wordDensity[i].word !== first.word) {
+                third.times = data.wordDensity[i].times;
+                third.word = data.wordDensity[i].word;
+                third.per = Math.round(((third.times / data.totalWord) * 100));
+                i = 0;
+            }
+            if (data.wordDensity[i].times > fourth.times && data.wordDensity[i].word !== third.word && data.wordDensity[i].word !== second.word && data.wordDensity[i].word !== first.word) {
+                fourth.times = data.wordDensity[i].times;
+                fourth.word = data.wordDensity[i].word;
+                fourth.per = Math.round(((fourth.times / data.totalWord) * 100));
+                i = 0;
+            }
+            if (data.wordDensity[i].times > fifth.times && data.wordDensity[i].word !== fourth.word && data.wordDensity[i].word !== third.word && data.wordDensity[i].word !== second.word && data.wordDensity[i].word !== first.word) {
+                fifth.times = data.wordDensity[i].times;
+                fifth.word = data.wordDensity[i].word;
+                fifth.per = Math.round(((fifth.times / data.totalWord) * 100));
+            }
+        }
         return [first, second, third, fourth, fifth];
         
     }
