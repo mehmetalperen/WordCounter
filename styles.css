@@ -25,3 +25,7 @@ section {
     padding-top: 25px;
     justify-content: space-between;
 }
+
+#word-density-container {
+    margin-top: 50px;
+}

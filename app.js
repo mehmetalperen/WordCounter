@@ -18,16 +18,11 @@ const ParagraphCrt = ( function() {
         totalCharacter: 0,
         words: [],
         totalWord: 0,
+        wordDensity:[],
         sentences: [],
         totalSentence: 0,
         totalParagraph: 0,
-        currentCharacter: '',
-        previousCharacter: '',
-        currentWord: '',
-        previousWord:'',
         keyCodes: [],
-        currentKeyCode: -1,
-        previousKeyCode: -1
 
     }
 
@@ -35,13 +30,75 @@ const ParagraphCrt = ( function() {
         data.totalCharacter = data.essay.length
     }
     function wordSpliterAndCounter() { //each second finds all of the words in the essay
-        data.words.length = 0;
-        data.words = data.essay.split(' ');
-        if (data.words[data.words.length - 1] === '') {
-            data.words.pop();
+        let tempEssay = data.essay;
+
+        while(true) {
+            tempEssay = tempEssay.replace('\n', '');
+            if (tempEssay.indexOf('\n') === -1) {
+                break;
+            }
         }
+        data.words.length = 0;
+        let tempEssayArr =  tempEssay.split(' ');
+
+        if (tempEssayArr[tempEssayArr.length - 1] === '') {
+            tempEssayArr.pop();
+        }
+        tempEssayArr.forEach(el => {
+            if ((el.charCodeAt(el.length - 1) < 65 || el.charCodeAt(el.length - 1) > 90) && (el.charCodeAt(el.length - 1) < 97 || el.charCodeAt(el.length - 1) > 122) && el.length > 1) {
+                el = el.substring(0, el.length - 1)
+                data.words.push(el);
+            } else {
+                el === ''? null: data.words.push(el);
+            }
+        })
         data.totalWord = data.words.length;
 
+    }
+    function wordDensity() {
+        data.wordDensity.length = 0;
+        data.wordDensity = [{word: '', times: 0}];
+        const nonCountableWords = ['as', 'As', 'in', 'In', 'on', 'On', 'at', 'At', 'that','my', 'My', 'his', 'His', 'be', 'Be','Him', 'and', 'And', 'then', 'Then', 'Or', 'or', 'him', 'Her', 'Hers', 'your', 'Your', 'yours', 'Yours', 'their', 'Their', 'Theirs', 'theirs', 'to', 'To', 'That', 'of', 'Of','I', 'am', 'Am', 'is', 'Is', 'are', 'Are', 'we', 'We', 'he', 'He', 'she', 'She', 'the', 'they', 'The', 'They', 'you', 'You', 'it', 'It', 'has', 'had', 'have', 'Has', 'Have', 'Had', 'would', 'Would', 'a', 'an', 'A', 'An'];
+
+        for (let i = 0; i < data.words.length; i++) {
+            if (nonCountableWords.indexOf(data.words[i]) !== -1) {
+                continue;
+            }
+            let found = false;
+            data.wordDensity.forEach(el => {
+                if (el.word === data.words[i]) {
+                     el.times++;
+                     found = true;
+                }
+            }); 
+            !found? data.wordDensity.push({word: data.words[i],times: 1}): null;
+        }
+    }
+    function wordUsagePercentage() {
+        let first, second, third, fourth, fifth;
+        first = {
+            word: '',
+            times: 0
+        };
+        second = {
+            word: '',
+            times: 0
+        };
+        third = {
+            word: '',
+            times: 0
+        };
+        fourth = {
+            word: '',
+            times: 0
+        };
+        fifth = {
+            word: '',
+            times: 0
+        };
+        
+        return [first, second, third, fourth, fifth];
+        
     }
 
     function sentenceCounter() {
@@ -105,11 +162,6 @@ my solution is:
         },
         keyboardMovements(keyNumber) {
 
-            if (keyNumber === 8) {
-                data.keyCodes.pop(); //this way, we will be able to count the paragraphs. 
-            } else {
-                data.keyCodes.push(keyNumber); 
-            }
 
             characterCounter();
             wordSpliterAndCounter();
@@ -124,8 +176,16 @@ my solution is:
                 wordNumber: data.totalWord,
                 sentenceNumber: data.totalSentence,
                 paragraphNumber: data.totalParagraph
-
             }
+        },
+        getDensityPer: function() {
+            if (data.words.length > 10) {
+                wordDensity();
+                return wordUsagePercentage();
+            } else {
+                return -1;
+            }
+            
         },
         getData: function() {
             return data;
@@ -233,7 +293,8 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         //send the totals to UI
         UIcontrol.manipulateDetails(totals.characterNumber, totals.wordNumber, totals.sentenceNumber, totals.paragraphNumber);
 
-
+        //get density percentage
+        console.log(ParagraphControl.getDensityPer());
 
 
         
