@@ -289,7 +289,7 @@ const UIctr = ( function() {
             /*
             dataArr = [{word: '', times: 0, per: 0}]
             */
-            let Html = '<li id="word-%id%" class="list-group-item"><div class="row"><div class = "col-6 density-word" style="display: inline;">%word%</div><div class="col-6 density-list-data"><div class="density-times" style="display: inline;">(%times%)</div><div class="density-percentage" style="display: inline;">%per%%</div></div></div></li>';
+            let Html = '<li id="word-%id%" class="list-group-item"><div class="row"><div class = "col-6 density-word" style="display: inline;">%word%<i class="fas fa-times"></i></div><div class="col-6 density-list-data"><div class="density-times" style="display: inline;">(%times%)</div><div class="density-percentage" style="display: inline;">%per%%</div></div></div></li>';
             
             while(document.getElementById('word_density-box').firstChild) {
                 document.getElementById('word_density-box').removeChild(document.getElementById('word_density-box').lastChild)

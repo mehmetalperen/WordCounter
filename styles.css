@@ -74,3 +74,12 @@ section {
   #details-container {
       display: flex;
   }
+
+  i {
+      margin-left: 10px;
+      color: black;
+  }
+
+  i:hover {
+      color: #f00d;
+  }

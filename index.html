@@ -7,6 +7,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+   <!-- fontawesome CSS -->
+   <link rel="stylesheet" href="fontawesome-free-5.15.1-web/css/all.css">
+
     <!-- style.css -->
     <link rel="stylesheet" href="styles.css">
 
@@ -45,9 +48,15 @@
                 </form>
             </div>
 
+
+
+
+
             <!-- detail Box AND density box -->
             <div id="detail-density-box" class="col-md-12 col-lg-3">
-                <div id="details-container" class="card" style="width: 18rem;">
+              <div class="row">
+                <div class="col">
+                  <div id="details-container" class="card" style="width: 18rem;">
                     <div class="card-header bg-info">
                       Details
                     </div>
@@ -124,7 +133,9 @@
 
                     </ul>
                   </div>
+                </div>
 
+                <div class="col">
                   <!-- Word Density Box -->
 
                   <!-- Render this, After user inputs -->
@@ -137,10 +148,12 @@
 
                       <!-- words density list  -->
 
-                      <li id="word-%id%" class="list-group-item">
+                      <!-- <li id="word-%id%" class="list-group-item">
                         <div class="row">
                           <div class = "col-6 density-word" style="display: inline;">
                             %word%
+                            <i class="fas fa-times"></i>
+
                           </div>
                           
                           <div class="col-6 density-list-data">
@@ -153,10 +166,20 @@
                           </div>
                         </div>
 
-                      </li>
-
+                      </li> -->
                     </ul>
                   </div>
+                </div>
+              </div>
+
+
+
+
+
+              
+
+
+
 
             </div>
 
