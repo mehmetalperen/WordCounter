@@ -23,6 +23,7 @@ const ParagraphCrt = ( function() {
         totalSentence: 0,
         totalParagraph: 0,
         keyCodes: [],
+        deletedWords: []
 
     }
 
@@ -61,7 +62,7 @@ const ParagraphCrt = ( function() {
         const nonCountableWords = ['as', 'As', 'in', 'In', 'not', 'Not', 'on', 'On', 'at', 'At', 'that','my', 'My', 'his', 'His', 'be', 'Be','Him', 'and', 'And', 'then', 'Then', 'Or', 'or', 'him', 'Her', 'Hers', 'your', 'Your', 'yours', 'Yours', 'their', 'Their', 'Theirs', 'theirs', 'to', 'To', 'That', 'of', 'Of','I', 'am', 'Am', 'is', 'Is', 'are', 'Are', 'we', 'We', 'he', 'He', 'she', 'She', 'the', 'they', 'The', 'They', 'you', 'You', 'it', 'It', 'has', 'had', 'have', 'Has', 'Have', 'Had', 'would', 'Would', 'a', 'an', 'A', 'An'];
         let ID = 0;
         for (let i = 0; i < data.words.length; i++) {
-            if (nonCountableWords.indexOf(data.words[i]) !== -1 || !isNaN(parseInt(data.words[i]/*ignore numbers*/))) {
+            if (nonCountableWords.indexOf(data.words[i]) !== -1 || !isNaN(parseInt(data.words[i]/*ignore numbers*/)) || data.deletedWords.indexOf(data.words[i]) !== -1) {
                 continue;
             }
             let found = false;
@@ -230,6 +231,14 @@ my solution is:
             }
             
         },
+        deleteWordFromDensity: function(ID) {
+            data.wordDensity.forEach( el => {
+                if (el.id === ID) {
+                    data.deletedWords.push(el.word);
+                }
+            })
+
+        },
         getData: function() {
             return data;
         }
@@ -263,7 +272,8 @@ const UIctr = ( function() {
         totalSpeakingTimeDetailValue: '.total-speakingTime-value-detail',
         detailsContainer: "#details-container",
         wordDensityContainer:'word-density-container',
-        wordDensityBox: '#word_density-box'
+        wordDensityBox: '#word_density-box',
+        detailDensityBox: 'detail-density-box'
     }
   
     
@@ -343,6 +353,11 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
             handleTyping(event.keyCode);
         });
 
+        //AFTER a word delete icon is clicked
+        document.getElementById(Dom.detailDensityBox).addEventListener('click', function(event) {
+            handleDeleting(event);
+        })
+
         
         
     }
@@ -366,6 +381,24 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         UIcontrol.manipulateDetails(totals.characterNumber, totals.wordNumber, totals.sentenceNumber, totals.paragraphNumber);
 
         //get density percentage
+        wordDensityBox();
+        
+
+
+        
+    }
+
+    function handleDeleting(event) {
+        let item = event.target.parentElement.parentElement.parentElement.id.split('-'); //will be someting like "word-##"
+        let itemID = item[1]; //will be a #
+        itemID = parseInt(itemID);
+        ParagraphControl.deleteWordFromDensity(itemID); 
+        wordDensityBox();
+
+    }
+
+    function wordDensityBox() {
+        //get density percentage
         if (ParagraphControl.getDensityPer() !== -1) { // if there is enough word to get the data
             let densityData = ParagraphControl.getDensityPer();
             UIcontrol.manipulateWordDensityBox(densityData);
@@ -374,10 +407,6 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         } else {
             document.getElementById(Dom.wordDensityContainer).style.visibility = 'hidden';
         }
-        
-
-
-        
     }
 
     
