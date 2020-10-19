@@ -23,7 +23,9 @@ const ParagraphCrt = ( function() {
         totalSentence: 0,
         totalParagraph: 0,
         keyCodes: [],
-        deletedWords: []
+        deletedWords: [],
+        requirmentWordNumber: -1,
+        progressPer: -1
 
     }
 
@@ -199,6 +201,11 @@ my solution is:
         data.totalParagraph = paragraphNum;
     }
 
+    function progressCalculation() {
+        data.progressPer = Math.round(((data.totalWord / data.requirmentWordNumber) * 100));
+
+    }
+
     return {
         addInput: function(input) {
             data.essay = input;
@@ -212,6 +219,10 @@ my solution is:
             sentenceSplitter();
             sentenceCounter();
             paragraphCounter();
+
+            if (data.requirmentWordNumber > 0) {
+                progressCalculation();
+            }
 
         },
         getTotals: function() {
@@ -238,6 +249,13 @@ my solution is:
                 }
             })
 
+        },
+        setRequiredWordNumber: function(requirmentNumber) {
+            data.requirmentWordNumber = requirmentNumber;
+
+        },
+        getProgressPercentage: function() {
+            return data.progressPer;
         },
         getData: function() {
             return data;
@@ -273,7 +291,13 @@ const UIctr = ( function() {
         detailsContainer: "#details-container",
         wordDensityContainer:'word-density-container',
         wordDensityBox: '#word_density-box',
-        detailDensityBox: 'detail-density-box'
+        detailDensityBox: 'detail-density-box',
+        wordRequirmentInput:'#word-requirment-input',
+        wordInputSubmitBtn:'#word-requirment-input-submit-button',
+        progressBar25: '#progress-bar-25',
+        progressBar50:'#progress-bar-50',
+        progressBar75:'#progress-bar-75',
+        progressBar100:'#progress-bar-100'
     }
   
     
@@ -321,6 +345,105 @@ const UIctr = ( function() {
 
                                     
             });
+        },
+        getRequiredWordInput: function() {
+            return parseInt(document.querySelector(DOMstrings.wordRequirmentInput).value);
+        },
+        manipulateProgressBar: function(progressPercentage) {
+
+
+            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-danger');
+            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-warning');
+            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-primary');
+            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-success');
+
+            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-danger');
+            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-warning');
+            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-primary');
+            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-success');
+
+            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-danger');
+            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-warning');
+            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-primary');
+            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-success');
+
+            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-danger');
+            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-warning');
+            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-primary');
+            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-success');
+
+
+
+
+
+            if (progressPercentage <= 0) {
+                document.querySelector(DOMstrings.progressBar25).classList.add('bg-white');
+                document.querySelector(DOMstrings.progressBar50).classList.add('bg-white')
+                document.querySelector(DOMstrings.progressBar75).classList.add('bg-white')
+                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
+
+            } else if (progressPercentage <= 25) {
+                document.querySelector(DOMstrings.progressBar25).classList.add('bg-danger');
+                document.querySelector(DOMstrings.progressBar25).style.width = progressPercentage + '%';
+                document.querySelector(DOMstrings.progressBar25).innerHTML = progressPercentage + '%';
+
+                document.querySelector(DOMstrings.progressBar50).classList.add('bg-white')
+                document.querySelector(DOMstrings.progressBar75).classList.add('bg-white')
+                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
+
+            } else if (progressPercentage <= 50) {
+                document.querySelector(DOMstrings.progressBar25).classList.add('bg-warning');
+                document.querySelector(DOMstrings.progressBar25).style.width = 25 + '%';
+                document.querySelector(DOMstrings.progressBar25).innerHTML = '';
+
+                document.querySelector(DOMstrings.progressBar50).classList.add('bg-warning')
+                document.querySelector(DOMstrings.progressBar50).style.width = (progressPercentage - 25) + '%';
+                document.querySelector(DOMstrings.progressBar50).innerHTML = progressPercentage + '%';
+
+                document.querySelector(DOMstrings.progressBar75).classList.add('bg-white')
+                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
+
+            } else if (progressPercentage <= 75) {
+                document.querySelector(DOMstrings.progressBar25).classList.add('bg-primary');
+                document.querySelector(DOMstrings.progressBar25).style.width = 25 + '%';
+                document.querySelector(DOMstrings.progressBar25).innerHTML = '';
+
+                document.querySelector(DOMstrings.progressBar50).classList.add('bg-primary')
+                document.querySelector(DOMstrings.progressBar50).style.width = 25 + '%';
+                document.querySelector(DOMstrings.progressBar50).innerHTML = '';
+
+                document.querySelector(DOMstrings.progressBar75).classList.add('bg-primary')
+                document.querySelector(DOMstrings.progressBar75).style.width = (progressPercentage - 50) + '%';
+                document.querySelector(DOMstrings.progressBar75).innerHTML = progressPercentage + '%';
+
+                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
+
+            } else if (progressPercentage <= 100) {
+                document.querySelector(DOMstrings.progressBar25).classList.add('bg-success');
+                document.querySelector(DOMstrings.progressBar25).style.width = 25 + '%';
+                document.querySelector(DOMstrings.progressBar25).innerHTML = '';
+
+                document.querySelector(DOMstrings.progressBar50).classList.add('bg-success')
+                document.querySelector(DOMstrings.progressBar50).style.width = 25 + '%';
+                document.querySelector(DOMstrings.progressBar50).innerHTML = '';
+
+                document.querySelector(DOMstrings.progressBar75).classList.add('bg-success')
+                document.querySelector(DOMstrings.progressBar75).style.width = 25 + '%';
+                document.querySelector(DOMstrings.progressBar75).innerHTML = '';
+
+                document.querySelector(DOMstrings.progressBar100).classList.add('bg-success')
+                document.querySelector(DOMstrings.progressBar100).style.width = (progressPercentage - 75) + '%';
+                document.querySelector(DOMstrings.progressBar100).innerHTML = progressPercentage + '%';
+            }
+
         }
     }
 
@@ -356,7 +479,9 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         //AFTER a word delete icon is clicked
         document.getElementById(Dom.detailDensityBox).addEventListener('click', function(event) {
             handleDeleting(event);
-        })
+        });
+
+        document.querySelector(Dom.wordInputSubmitBtn).addEventListener('click', handleReqWordSubmit)
 
         
         
@@ -380,8 +505,16 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         //send the totals to UI
         UIcontrol.manipulateDetails(totals.characterNumber, totals.wordNumber, totals.sentenceNumber, totals.paragraphNumber);
 
-        //get density percentage
+        //density percentage (UI and ParagraphDataControl)
         wordDensityBox();
+
+        //get progress persentage data
+        if (ParagraphControl.getProgressPercentage() !== -1) {
+            let progressPersentage = ParagraphControl.getProgressPercentage();
+
+            //Manipulate Progress UI
+            UIcontrol.manipulateProgressBar(progressPersentage);
+        }
         
 
 
@@ -407,6 +540,12 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         } else {
             document.getElementById(Dom.wordDensityContainer).style.visibility = 'hidden';
         }
+    }
+
+    function handleReqWordSubmit() {
+        let requiredWord = UIcontrol.getRequiredWordInput();
+        ParagraphControl.setRequiredWordNumber(requiredWord);
+
     }
 
     

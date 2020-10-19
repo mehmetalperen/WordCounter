@@ -83,3 +83,7 @@ section {
   i:hover {
       color: #f00d;
   }
+
+  .progress-bar {
+      text-align: left;
+  }
