@@ -57,9 +57,9 @@ const ParagraphCrt = ( function() {
     }
     function wordDensity() {
         data.wordDensity.length = 0;
-        data.wordDensity = [{word: '', times: 0}];
-        const nonCountableWords = ['as', 'As', 'in', 'In', 'on', 'On', 'at', 'At', 'that','my', 'My', 'his', 'His', 'be', 'Be','Him', 'and', 'And', 'then', 'Then', 'Or', 'or', 'him', 'Her', 'Hers', 'your', 'Your', 'yours', 'Yours', 'their', 'Their', 'Theirs', 'theirs', 'to', 'To', 'That', 'of', 'Of','I', 'am', 'Am', 'is', 'Is', 'are', 'Are', 'we', 'We', 'he', 'He', 'she', 'She', 'the', 'they', 'The', 'They', 'you', 'You', 'it', 'It', 'has', 'had', 'have', 'Has', 'Have', 'Had', 'would', 'Would', 'a', 'an', 'A', 'An'];
-
+        data.wordDensity = [];
+        const nonCountableWords = ['as', 'As', 'in', 'In', 'not', 'Not', 'on', 'On', 'at', 'At', 'that','my', 'My', 'his', 'His', 'be', 'Be','Him', 'and', 'And', 'then', 'Then', 'Or', 'or', 'him', 'Her', 'Hers', 'your', 'Your', 'yours', 'Yours', 'their', 'Their', 'Theirs', 'theirs', 'to', 'To', 'That', 'of', 'Of','I', 'am', 'Am', 'is', 'Is', 'are', 'Are', 'we', 'We', 'he', 'He', 'she', 'She', 'the', 'they', 'The', 'They', 'you', 'You', 'it', 'It', 'has', 'had', 'have', 'Has', 'Have', 'Had', 'would', 'Would', 'a', 'an', 'A', 'An'];
+        let ID = 0;
         for (let i = 0; i < data.words.length; i++) {
             if (nonCountableWords.indexOf(data.words[i]) !== -1 || !isNaN(parseInt(data.words[i]/*ignore numbers*/))) {
                 continue;
@@ -71,7 +71,8 @@ const ParagraphCrt = ( function() {
                      found = true;
                 }
             }); 
-            !found? data.wordDensity.push({word: data.words[i],times: 1}): null;
+            ID++;
+            !found? data.wordDensity.push({word: data.words[i],times: 1, id: ID}): null;
         }
     }
     function wordUsagePercentage() {
@@ -108,30 +109,35 @@ const ParagraphCrt = ( function() {
                 first.times = data.wordDensity[i].times;
                 first.word = data.wordDensity[i].word;
                 first.per = Math.round(((first.times / data.totalWord) * 100));
+                first.id = data.wordDensity[i].id;
                 i = 0;
             }
             if (data.wordDensity[i].times > second.times && data.wordDensity[i].word !== first.word) {
                 second.times = data.wordDensity[i].times;
                 second.word = data.wordDensity[i].word;
                 second.per = Math.round(((second.times / data.totalWord) * 100));
+                second.id = data.wordDensity[i].id;
                 i = 0;
             }
             if (data.wordDensity[i].times > third.times && data.wordDensity[i].word !== second.word && data.wordDensity[i].word !== first.word) {
                 third.times = data.wordDensity[i].times;
                 third.word = data.wordDensity[i].word;
                 third.per = Math.round(((third.times / data.totalWord) * 100));
+                third.id = data.wordDensity[i].id;
                 i = 0;
             }
             if (data.wordDensity[i].times > fourth.times && data.wordDensity[i].word !== third.word && data.wordDensity[i].word !== second.word && data.wordDensity[i].word !== first.word) {
                 fourth.times = data.wordDensity[i].times;
                 fourth.word = data.wordDensity[i].word;
                 fourth.per = Math.round(((fourth.times / data.totalWord) * 100));
+                fourth.id = data.wordDensity[i].id;
                 i = 0;
             }
             if (data.wordDensity[i].times > fifth.times && data.wordDensity[i].word !== fourth.word && data.wordDensity[i].word !== third.word && data.wordDensity[i].word !== second.word && data.wordDensity[i].word !== first.word) {
                 fifth.times = data.wordDensity[i].times;
                 fifth.word = data.wordDensity[i].word;
                 fifth.per = Math.round(((fifth.times / data.totalWord) * 100));
+                fifth.id = data.wordDensity[i].id;
             }
         }
         return [first, second, third, fourth, fifth];
@@ -255,7 +261,8 @@ const UIctr = ( function() {
         totalParagraphDetailValue: '.total-paragraph-value-detail',
         totalReadingTimeDetailValue: '.total-readingTime-value-detail',
         totalSpeakingTimeDetailValue: '.total-speakingTime-value-detail',
-        detailsContainer: "#details-container"
+        detailsContainer: "#details-container",
+        wordDensityBox: '#word_density-box'
     }
   
     
@@ -276,6 +283,33 @@ const UIctr = ( function() {
             document.querySelector(DOMstrings.totalWordDetailValue).innerHTML = totWord;
             document.querySelector(DOMstrings.totalSentenceDetailValue).innerHTML = totSentence;
             document.querySelector(DOMstrings.totalParagraphDetailValue).innerHTML = totParagraph;
+        },
+        manipulateWordDensityBox: function(dataArr) {
+            /*
+            dataArr = [{word: '', times: 0, per: 0}]
+            */
+            let Html = '<li id="word-%id%" class="list-group-item"><div class = "density-word" style="display: inline;">%word%</div><div class="density-times" style="display: inline;">(%times%)</div><div class="density-percentage" style="display: inline;">%per%%</div></li>';
+            
+            while(document.getElementById('word_density-box').firstChild) {
+                document.getElementById('word_density-box').removeChild(document.getElementById('word_density-box').lastChild)
+            }
+
+            dataArr.forEach( data => {
+                if (document.getElementById('word-' + data.id) === null && typeof document.getElementById('word-' + data.id)) {
+            
+                    let insertHtml = Html.replace('%id%', data.id);
+                    insertHtml= insertHtml.replace('%word%', data.word);
+                    insertHtml = insertHtml.replace('%times%', data.times);
+                    insertHtml = insertHtml.replace('%per%', data.per);
+
+                    document.querySelector(DOMstrings.wordDensityBox).insertAdjacentHTML('beforeend', insertHtml);
+
+                } else {
+
+                }
+
+                                    
+            });
         }
     }
 
@@ -331,7 +365,12 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         UIcontrol.manipulateDetails(totals.characterNumber, totals.wordNumber, totals.sentenceNumber, totals.paragraphNumber);
 
         //get density percentage
-        console.log(ParagraphControl.getDensityPer());
+        if (ParagraphControl.getDensityPer() !== -1) { // if there is enough word to get the data
+            let densityData = ParagraphControl.getDensityPer();
+            console.log(densityData);
+            UIcontrol.manipulateWordDensityBox(densityData);
+        }
+        
 
 
         

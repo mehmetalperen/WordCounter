@@ -29,3 +29,7 @@ section {
 #word-density-container {
     margin-top: 50px;
 }
+
+.density-word {
+    padding-right: 40%;
+}
