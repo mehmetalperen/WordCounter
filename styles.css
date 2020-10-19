@@ -23,13 +23,54 @@ section {
     flex-wrap: wrap;
     height: fit-content;
     padding-top: 25px;
-    justify-content: space-between;
 }
 
 #word-density-container {
-    margin-top: 50px;
+    visibility: hidden;
 }
 
-.density-word {
-    padding-right: 40%;
+
+
+.total-word-value {
+    text-align: right;
+    padding-right: 30px;
 }
+
+
+.total-sentence-value {
+    text-align: right;
+    padding-right: 30px;
+}
+
+.total-paragraph-value {
+    text-align: right;
+    padding-right: 30px;
+}
+.total-character-value{
+    text-align: right;
+    padding-right: 30px;
+}
+.density-list-data{
+    text-align: right;
+    padding-right: 30px;
+}
+
+#detail-density-box{
+    flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 1025) {
+
+    body {
+        text-align: right;
+    }
+    section{
+        padding: 0;
+        margin: 0;
+    }
+
+  }
+
+  #details-container {
+      display: flex;
+  }

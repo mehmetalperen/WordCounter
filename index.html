@@ -45,45 +45,62 @@
                 </form>
             </div>
 
-            <!-- detail Box -->
-            <div class="col-md-12 col-lg-3">
+            <!-- detail Box AND density box -->
+            <div id="detail-density-box" class="col-md-12 col-lg-3">
                 <div id="details-container" class="card" style="width: 18rem;">
                     <div class="card-header bg-info">
                       Details
                     </div>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
-                          <div style="display: inline;">
+
+                        <div class="row">
+                          <div class="col-6" style="display: inline;">
                             Words
                           </div>
-                          <div class="total-word-value" style="display: inline;">
+                          <div class="col-6 total-word-value" style="display: inline;">
                             <span class="total-word-value-detail">---</span>
                           </div>
+                        </div>
+
+
                       </li>
 
                       <li class="list-group-item">
-                        <div style="display: inline;">
+
+                        <div class="row">
+                        <div class="col-6" style="display: inline;">
                           Charachters
                         </div>
-                        <div class="total-character-value" style="display: inline;">
+                        <div class="col-6 total-character-value" style="display: inline;">
                             <span class="total-character-value-detail">---</span>
+                        </div>                          
                         </div>
+
                     </li>
                     <li class="list-group-item">
-                        <div style="display: inline;">
+
+                      <div class="row">
+                        <div class="col-6" style="display: inline;">
                           Sentences
                         </div>
-                        <div class="total-sentence-value" style="display: inline;">
+                        <div class="col-6 total-sentence-value" style="display: inline;">
                             <span class="total-sentence-value-detail">---</span>
-                        </div>
+                        </div>                        
+                      </div>
+
                     </li>
                     <li class="list-group-item">
-                        <div style="display: inline;">
+
+                      <div class="row">
+                        <div class="col-6" style="display: inline;">
                           Paragraphs
                         </div>
-                        <div class="total-paragraph-value" style="display: inline;">
+                        <div class="col-6 total-paragraph-value" style="display: inline;">
                             <span class="total-paragraph-value-detail">---</span>
-                        </div>
+                        </div>                        
+                      </div>
+
                     </li>
                     <!-- Maybe -->
                     <li class="list-group-item">
@@ -120,17 +137,23 @@
 
                       <!-- words density list  -->
 
-                      <!-- <li id="word-%id%" class="list-group-item">
-                          <div class = "density-word" style="display: inline;">
+                      <li id="word-%id%" class="list-group-item">
+                        <div class="row">
+                          <div class = "col-6 density-word" style="display: inline;">
                             %word%
                           </div>
-                          <div class="density-times" style="display: inline;">
-                            (%times%)
+                          
+                          <div class="col-6 density-list-data">
+                            <div class="density-times" style="display: inline;">
+                              (%times%)
+                            </div>
+                            <div class="density-percentage" style="display: inline;">
+                              %per%%
+                            </div>                            
                           </div>
-                          <div class="density-percentage" style="display: inline;">
-                            %percentage%%
-                          </div>
-                      </li> -->
+                        </div>
+
+                      </li>
 
                     </ul>
                   </div>

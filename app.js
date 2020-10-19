@@ -262,6 +262,7 @@ const UIctr = ( function() {
         totalReadingTimeDetailValue: '.total-readingTime-value-detail',
         totalSpeakingTimeDetailValue: '.total-speakingTime-value-detail',
         detailsContainer: "#details-container",
+        wordDensityContainer:'word-density-container',
         wordDensityBox: '#word_density-box'
     }
   
@@ -288,7 +289,7 @@ const UIctr = ( function() {
             /*
             dataArr = [{word: '', times: 0, per: 0}]
             */
-            let Html = '<li id="word-%id%" class="list-group-item"><div class = "density-word" style="display: inline;">%word%</div><div class="density-times" style="display: inline;">(%times%)</div><div class="density-percentage" style="display: inline;">%per%%</div></li>';
+            let Html = '<li id="word-%id%" class="list-group-item"><div class="row"><div class = "col-6 density-word" style="display: inline;">%word%</div><div class="col-6 density-list-data"><div class="density-times" style="display: inline;">(%times%)</div><div class="density-percentage" style="display: inline;">%per%%</div></div></div></li>';
             
             while(document.getElementById('word_density-box').firstChild) {
                 document.getElementById('word_density-box').removeChild(document.getElementById('word_density-box').lastChild)
@@ -367,8 +368,11 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
         //get density percentage
         if (ParagraphControl.getDensityPer() !== -1) { // if there is enough word to get the data
             let densityData = ParagraphControl.getDensityPer();
-            console.log(densityData);
             UIcontrol.manipulateWordDensityBox(densityData);
+            document.getElementById(Dom.wordDensityContainer).style.visibility = 'visible';
+
+        } else {
+            document.getElementById(Dom.wordDensityContainer).style.visibility = 'hidden';
         }
         
 
