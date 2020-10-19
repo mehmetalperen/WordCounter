@@ -25,7 +25,7 @@ const ParagraphCrt = ( function() {
         keyCodes: [],
         deletedWords: [],
         requirmentWordNumber: -1,
-        progressPer: -1
+        progressPer: 0
 
     }
 
@@ -222,6 +222,9 @@ my solution is:
 
             if (data.requirmentWordNumber > 0) {
                 progressCalculation();
+
+            } else {
+                data.progressPer = 0;
             }
 
         },
@@ -297,7 +300,8 @@ const UIctr = ( function() {
         progressBar25: '#progress-bar-25',
         progressBar50:'#progress-bar-50',
         progressBar75:'#progress-bar-75',
-        progressBar100:'#progress-bar-100'
+        progressBar100:'#progress-bar-100',
+        wordReqClearBtn:'#word-requirment-input-clear-button'
     }
   
     
@@ -426,7 +430,7 @@ const UIctr = ( function() {
 
                 document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
 
-            } else if (progressPercentage <= 100) {
+            } else {
                 document.querySelector(DOMstrings.progressBar25).classList.add('bg-success');
                 document.querySelector(DOMstrings.progressBar25).style.width = 25 + '%';
                 document.querySelector(DOMstrings.progressBar25).innerHTML = '';
@@ -481,7 +485,11 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
             handleDeleting(event);
         });
 
-        document.querySelector(Dom.wordInputSubmitBtn).addEventListener('click', handleReqWordSubmit)
+        //handle subnmit button click
+        document.querySelector(Dom.wordInputSubmitBtn).addEventListener('click', handleReqWordSubmit);
+
+        //handle clear button click
+        document.querySelector(Dom.wordReqClearBtn).addEventListener('click', handleClearReqWord);
 
         
         
@@ -545,7 +553,15 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
     function handleReqWordSubmit() {
         let requiredWord = UIcontrol.getRequiredWordInput();
         ParagraphControl.setRequiredWordNumber(requiredWord);
+        document.querySelector(Dom.inputBox).focus();
 
+
+    }
+
+    function handleClearReqWord() {
+        ParagraphControl.setRequiredWordNumber(0);
+        document.querySelector(Dom.wordRequirmentInput).value = '';
+        
     }
 
     
