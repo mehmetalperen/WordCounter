@@ -258,6 +258,9 @@ my solution is:
 
         },
         getProgressPercentage: function() {
+            if (data.requirmentWordNumber > 0) {
+                progressCalculation();
+            }
             return data.progressPer;
         },
         getData: function() {
@@ -297,10 +300,7 @@ const UIctr = ( function() {
         detailDensityBox: 'detail-density-box',
         wordRequirmentInput:'#word-requirment-input',
         wordInputSubmitBtn:'#word-requirment-input-submit-button',
-        progressBar25: '#progress-bar-25',
-        progressBar50:'#progress-bar-50',
-        progressBar75:'#progress-bar-75',
-        progressBar100:'#progress-bar-100',
+        progressBar: '#progress-per-bar',
         wordReqClearBtn:'#word-requirment-input-clear-button'
     }
   
@@ -355,98 +355,38 @@ const UIctr = ( function() {
         },
         manipulateProgressBar: function(progressPercentage) {
 
+            document.querySelector(DOMstrings.progressBar).classList.remove('bg-white');
+            document.querySelector(DOMstrings.progressBar).classList.remove('bg-primary');
+            document.querySelector(DOMstrings.progressBar).classList.remove('bg-success');
+            document.querySelector(DOMstrings.progressBar).classList.remove('bg-warning');
+            document.querySelector(DOMstrings.progressBar).classList.remove('bg-danger');
 
-            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-danger');
-            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-warning');
-            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-primary');
-            document.querySelector(DOMstrings.progressBar25).classList.remove('bg-success');
-
-            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-danger');
-            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-warning');
-            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-primary');
-            document.querySelector(DOMstrings.progressBar50).classList.remove('bg-success');
-
-            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-danger');
-            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-warning');
-            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-primary');
-            document.querySelector(DOMstrings.progressBar75).classList.remove('bg-success');
-
-            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-white');
-            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-danger');
-            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-warning');
-            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-primary');
-            document.querySelector(DOMstrings.progressBar100).classList.remove('bg-success');
+            document.querySelector(DOMstrings.progressBar).innerHTML = progressPercentage + '%';
+            document.querySelector(DOMstrings.progressBar).style.width = progressPercentage + '%';
 
 
+            if (progressPercentage < 0) {
+                document.querySelector(DOMstrings.progressBar).style.width = '100%';
+                document.querySelector(DOMstrings.progressBar).innerHTML = 'NO PROGRESS';
 
+            } else if (progressPercentage >= 0 && progressPercentage <= 25) {
+                document.querySelector(DOMstrings.progressBar).classList.add('bg-danger');
 
+            } else if (progressPercentage > 25  && progressPercentage <= 50) {
+                document.querySelector(DOMstrings.progressBar).classList.add('bg-warning');
 
-            if (progressPercentage <= 0) {
-                document.querySelector(DOMstrings.progressBar25).classList.add('bg-white');
-                document.querySelector(DOMstrings.progressBar50).classList.add('bg-white')
-                document.querySelector(DOMstrings.progressBar75).classList.add('bg-white')
-                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
+            } else if (progressPercentage > 50  && progressPercentage <= 75) {
+                document.querySelector(DOMstrings.progressBar).classList.add('bg-primary');
 
-            } else if (progressPercentage <= 25) {
-                document.querySelector(DOMstrings.progressBar25).classList.add('bg-danger');
-                document.querySelector(DOMstrings.progressBar25).style.width = progressPercentage + '%';
-                document.querySelector(DOMstrings.progressBar25).innerHTML = progressPercentage + '%';
+            } else if (progressPercentage > 75  && progressPercentage <= 100) {
+                document.querySelector(DOMstrings.progressBar).classList.add('bg-success');
 
-                document.querySelector(DOMstrings.progressBar50).classList.add('bg-white')
-                document.querySelector(DOMstrings.progressBar75).classList.add('bg-white')
-                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
+            } else if (progressPercentage > 100) {
+                document.querySelector(DOMstrings.progressBar).classList.add('bg-success');
+                document.querySelector(DOMstrings.progressBar).innerHTML = 'COMPLETED';
 
-            } else if (progressPercentage <= 50) {
-                document.querySelector(DOMstrings.progressBar25).classList.add('bg-warning');
-                document.querySelector(DOMstrings.progressBar25).style.width = 25 + '%';
-                document.querySelector(DOMstrings.progressBar25).innerHTML = '';
-
-                document.querySelector(DOMstrings.progressBar50).classList.add('bg-warning')
-                document.querySelector(DOMstrings.progressBar50).style.width = (progressPercentage - 25) + '%';
-                document.querySelector(DOMstrings.progressBar50).innerHTML = progressPercentage + '%';
-
-                document.querySelector(DOMstrings.progressBar75).classList.add('bg-white')
-                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
-
-            } else if (progressPercentage <= 75) {
-                document.querySelector(DOMstrings.progressBar25).classList.add('bg-primary');
-                document.querySelector(DOMstrings.progressBar25).style.width = 25 + '%';
-                document.querySelector(DOMstrings.progressBar25).innerHTML = '';
-
-                document.querySelector(DOMstrings.progressBar50).classList.add('bg-primary')
-                document.querySelector(DOMstrings.progressBar50).style.width = 25 + '%';
-                document.querySelector(DOMstrings.progressBar50).innerHTML = '';
-
-                document.querySelector(DOMstrings.progressBar75).classList.add('bg-primary')
-                document.querySelector(DOMstrings.progressBar75).style.width = (progressPercentage - 50) + '%';
-                document.querySelector(DOMstrings.progressBar75).innerHTML = progressPercentage + '%';
-
-                document.querySelector(DOMstrings.progressBar100).classList.add('bg-white')
-
-            } else {
-                document.querySelector(DOMstrings.progressBar25).classList.add('bg-success');
-                document.querySelector(DOMstrings.progressBar25).style.width = 25 + '%';
-                document.querySelector(DOMstrings.progressBar25).innerHTML = '';
-
-                document.querySelector(DOMstrings.progressBar50).classList.add('bg-success')
-                document.querySelector(DOMstrings.progressBar50).style.width = 25 + '%';
-                document.querySelector(DOMstrings.progressBar50).innerHTML = '';
-
-                document.querySelector(DOMstrings.progressBar75).classList.add('bg-success')
-                document.querySelector(DOMstrings.progressBar75).style.width = 25 + '%';
-                document.querySelector(DOMstrings.progressBar75).innerHTML = '';
-
-                document.querySelector(DOMstrings.progressBar100).classList.add('bg-success')
-                document.querySelector(DOMstrings.progressBar100).style.width = (progressPercentage - 75) + '%';
-                document.querySelector(DOMstrings.progressBar100).innerHTML = progressPercentage + '%';
             }
+
 
         }
     }
@@ -553,15 +493,20 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
     function handleReqWordSubmit() {
         let requiredWord = UIcontrol.getRequiredWordInput();
         ParagraphControl.setRequiredWordNumber(requiredWord);
+        console.log(requiredWord);
+        console.log(ParagraphControl.getProgressPercentage())
+        UIcontrol.manipulateProgressBar(ParagraphControl.getProgressPercentage());
         document.querySelector(Dom.inputBox).focus();
-
 
     }
 
     function handleClearReqWord() {
         ParagraphControl.setRequiredWordNumber(0);
         document.querySelector(Dom.wordRequirmentInput).value = '';
-        
+        UIcontrol.manipulateProgressBar(0);
+        document.querySelector(Dom.inputBox).focus();
+
+
     }
 
     
