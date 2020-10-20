@@ -2,17 +2,27 @@
 
 .navbar {
     margin-bottom: 50px;
+    margin-bottom: 7%;
 }
 
 .navbar h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-family: 'Kaushan Script', cursive;
+    padding: 0 0 0 5%;
 }
 
+.text-white {
+    font-family: 'Roboto Slab', serif;
+}
+
+div {
+    font-family: 'Roboto Slab', serif;
+}
 
 
 
 section {
-    padding: 0 10% 0 10%;
+    padding: 0 10% 10% 10%;
 }
 
 #paragraph-input-analysis-box h1{
@@ -59,17 +69,7 @@ section {
     flex-wrap: wrap;
 }
 
-@media only screen and (max-width: 1025) {
 
-    body {
-        text-align: right;
-    }
-    section{
-        padding: 0;
-        margin: 0;
-    }
-
-  }
 
   #details-container {
       display: flex;
@@ -87,3 +87,42 @@ section {
   .progress-bar {
       text-align: center;
   }
+@media only screen and (max-width: 500px) {
+
+    .text-white {
+        font-size: large;
+        display: block;
+
+    }
+    #paragraph-input-analysis-box {
+        padding-top: 0;
+    }
+}
+  #word-requirment-input-submit-button:hover #submit-icon{
+
+    color: white;
+    font-weight: bold;
+  }
+
+ #submit-icon{
+      color: #0275d8;
+  }
+
+  #clear-icon {
+      color:#ff0000;
+  }
+
+  #word-requirment-input-clear-button:hover #clear-icon {
+      color: white;
+  }
+
+  li:hover div {
+      padding: 2px 5px;
+      font-size: large;
+  }
+  li:hover {
+    background-color: #f1f6f9;
+
+  }
+
+  

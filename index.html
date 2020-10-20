@@ -10,6 +10,9 @@
    <!-- fontawesome CSS -->
    <link rel="stylesheet" href="fontawesome-free-5.15.1-web/css/all.css">
 
+   <!-- google fonts -->
+   <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Roboto+Slab:wght@400;600&display=swap" rel="stylesheet">
+
     <!-- style.css -->
     <link rel="stylesheet" href="styles.css">
 
@@ -19,11 +22,8 @@
   <body class="bg-light">
     
 <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-        <h1 class="navbar-brand" href="#">Count My Word</h1>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <h1 class="navbar-brand text-white" href="#">Count My Word</h1>
       
       </nav>
 
@@ -39,8 +39,8 @@
               <div class="input-group mb-3">
                 <input id="word-requirment-input" type="number" class="form-control" placeholder="Minimum Word Needed" aria-label="Needed word number" aria-describedby="button-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-info" type="button" id="word-requirment-input-submit-button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Submit</button>
-                  <button class="btn btn-outline-info" type="button" id="word-requirment-input-clear-button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Clear</button>
+                  <button class="btn btn-outline-primary" type="button" id="word-requirment-input-submit-button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Submit<i id="submit-icon" class="far fa-check-circle"></i></button>
+                  <button class="btn btn-outline-danger" type="button" id="word-requirment-input-clear-button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Clear<i id="clear-icon" class="far fa-trash-alt"></i></button>
 
                 </div>
               </div>
@@ -53,9 +53,9 @@
               </div>
             </div>
 
-                <div id="paragraph-input-analysis-box" class="card-header bg-info bg-info">
-                    <h1 style="display: inline;"><span class="total-word-value-title">---</span> words</h1>
-                    <h1 style="display: inline;"><span class="total-character-value-title">---</span> charachters</h1>
+                <div id="paragraph-input-analysis-box" class="card-header bg-info bg-dark">
+                    <h1 class="text-white" style="display: inline;"><span class="total-word-value-title text-white">---</span> words</h1>
+                    <h1 class="text-white" style="display: inline;"><span class="total-character-value-title text-white">---</span> charachters</h1>
                 </div>
 
                 <form action="">
@@ -75,7 +75,7 @@
               <div class="row">
                 <div class="col">
                   <div id="details-container" class="card" style="width: 18rem;">
-                    <div class="card-header bg-info">
+                    <div class="card-header bg-secondary text-light">
                       Details
                     </div>
                     <ul class="list-group list-group-flush">
@@ -159,7 +159,7 @@
                   <!-- Render this, After user inputs -->
 
                   <div id="word-density-container" class="card" style="width: 18rem;">
-                    <div class="card-header bg-info">
+                    <div class="card-header bg-secondary text-light">
                       Word Density
                     </div>
                     <ul id="word_density-box" class="list-group list-group-flush">

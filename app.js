@@ -493,8 +493,6 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
     function handleReqWordSubmit() {
         let requiredWord = UIcontrol.getRequiredWordInput();
         ParagraphControl.setRequiredWordNumber(requiredWord);
-        console.log(requiredWord);
-        console.log(ParagraphControl.getProgressPercentage())
         UIcontrol.manipulateProgressBar(ParagraphControl.getProgressPercentage());
         document.querySelector(Dom.inputBox).focus();
 
@@ -517,6 +515,7 @@ const AppControl = ( function(ParagraphControl,UIcontrol ) {
 
             document.querySelector(Dom.inputBox).focus();
             setEventListeners();
+            
         }
     }
 
